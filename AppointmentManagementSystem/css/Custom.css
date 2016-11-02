@@ -1,0 +1,35 @@
+﻿.center {
+    text-align:center;
+}
+.container-div{
+        margin-left: 320px;
+}
+
+.center-page{
+    
+    position:absolute;
+
+    top:10%;
+    bottom:0;
+    right:0;
+    left:0;
+
+    margin:auto;
+}
+.space-vert{
+    margin-top:20px;
+}
+.control-toppad{
+    margin-top:10px;
+}
+.nowrap {
+  white-space: nowrap ;
+  margin-left:20px;
+}
+#titlediv img {
+float:left;
+}
+.titledevcss{
+    top:-200px;
+    vertical-align:central;
+}
