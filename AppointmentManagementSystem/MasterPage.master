@@ -27,9 +27,10 @@
     <![endif]-->
     <script src="Scripts/jquery-1.9.1.min.js"></script>
     <script src="Scripts/moment.js"></script>
+    <script src="Scripts/bootstrap-slider.min.js"></script>
     <script src="Scripts/bootstrap-select.js"></script>
     <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
-     <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>    
     
 </head>
 <body>
@@ -55,14 +56,17 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Appointments<b class="caret"></b></a>
                             <ul class="dropdown-menu center">
-                                <li><a href="#">Create Appointment</a></li>                                
-                                <li><a href="#">Incoming Appointments</a></li>                                
-                                <li><a href="#">View Confirmed Appointments</a></li>
-                                <li><a href="#">Re-Schedule Appointment</a></li>
-                                <li><a href="#">Cancel Appointment</a></li>
+                                <li><a href="Default.aspx">Create Appointment</a></li>                                
+                                <li><a href="reschedule.aspx">Re-Schedule Appointment</a></li>
+                                <li><a href="cancel.aspx">Cancel Appointment</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Profile</a></li>
+                        <li class="dropdown_profile">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
+                            <ul class="dropdown-menu center">
+                                <li><a href="editprofile.aspx">Edit/View Profile</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#">My Bot</a></li>
                         <li><a href="logout.aspx">Logout</a></li>
                     </ul>

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Net;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -163,10 +164,11 @@ public partial class _Default : System.Web.UI.Page
 
     protected void bookappointment_Click(object sender, EventArgs e)
     {
-    String appointmentTime;
+
+         String appointmentTime;
 
 
-    appointmentTime = Listbox1.SelectedItem.Value; 
+         appointmentTime = Listbox1.SelectedItem.Value; 
 
 
         String cs = ConfigurationManager.ConnectionStrings["amsdbConnectionString"].ConnectionString;
@@ -192,5 +194,7 @@ public partial class _Default : System.Web.UI.Page
         Listbox1.Visible = false;
         available_list_title.Visible = false;
         bookappointment.Visible = false;
+
+                
     }
 }
