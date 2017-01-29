@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AppointmentManagementSystem", "E:\Learning\Project\AppointmentManagementSystem\", "{CD74DFB3-2087-42E4-923F-7C9442B28AB5}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_53711"
+		Debug.AspNetCompiler.PhysicalPath = "E:\Learning\Project\AppointmentManagementSystem\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53711\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_53711"
+		Release.AspNetCompiler.PhysicalPath = "E:\Learning\Project\AppointmentManagementSystem\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53711\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "53711"
+		SlnRelativePath = "E:\Learning\Project\AppointmentManagementSystem\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmsService", "AmsService\AmsService.csproj", "{8A1800DC-1909-4371-9816-CF8553AD07B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "amsBOT", "amsBOT\amsBOT.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD74DFB3-2087-42E4-923F-7C9442B28AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD74DFB3-2087-42E4-923F-7C9442B28AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD74DFB3-2087-42E4-923F-7C9442B28AB5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD74DFB3-2087-42E4-923F-7C9442B28AB5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
