@@ -37,6 +37,14 @@ namespace AmsService
         string ViewUserAppointments(string primaryamsid, string dateofappointment);
 
         [OperationContract]
+        [WebGet(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "/ViewUserAppointment?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}&timeslot={timeslot}")]
+        string ViewUserAppointment(string primaryamsid, string dateofappointment,string timeslot);
+
+        [OperationContract]
+        [WebGet(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "/LoginUser?primaryamsid={primaryamsid}&password={password}")]
+        string LoginUser(string primaryamsid, string password);
+
+        [OperationContract]
         [WebGet(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "/BookAppointmentJsonObj?primaryamsid={primaryamsid}&secondaryamsid={secondaryamsid}&dateofappointment={dateofappointment}&timeslot={timeslot}")]
         CompositeType BookAppointmentJsonObj(string primaryamsid, string secondaryamsid, string dateofappointment, string timeslot);
         // TODO: Add your service operations here

@@ -129,11 +129,52 @@ namespace AmsService
 
                 while (reader.Read())
                 {
-                    Appointments.Add(new Appointment(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));         
+                    Appointments.Add(new Appointment(reader.GetString(0), reader.GetString(2), reader.GetString(1), reader.GetString(3)));         
                 }
             }
            string AppointmentResultJson = JsonConvert.SerializeObject(Appointments);
            return AppointmentResultJson;
+        }
+
+        public string ViewUserAppointment(string primaryamsid, string dateofappointment,string timeslot)
+        {
+
+            List<Appointment> Appointments = new List<Appointment>();
+
+            String cs = ConfigurationManager.ConnectionStrings["amsdbConnectionString"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd_appointments = new SqlCommand("select * from Appointments where primary_amsid='" + primaryamsid + "' and appointmentdate='" + dateofappointment + "' and slot='"+timeslot+"' ", con);
+                con.Open();
+                SqlDataReader reader = cmd_appointments.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Appointments.Add(new Appointment(reader.GetString(0), reader.GetString(2), reader.GetString(1), reader.GetString(3)));
+                }
+            }
+            string AppointmentResultJson = JsonConvert.SerializeObject(Appointments);
+            return AppointmentResultJson;
+        }
+
+        public string LoginUser(string primaryamsid, string password)
+        {
+            String cs = ConfigurationManager.ConnectionStrings["amsdbConnectionString"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd_login = new SqlCommand("select amsid from Users where amsid='" + primaryamsid + "' and password='" + password + "'", con);
+                con.Open();
+                SqlDataReader reader = cmd_login.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return "Success";
+                }
+                else
+                {
+                    return "Fail";
+                }
+            }
         }
     }
 }

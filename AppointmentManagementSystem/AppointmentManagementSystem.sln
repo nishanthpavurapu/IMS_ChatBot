@@ -27,7 +27,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AppointmentManagementSystem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmsService", "AmsService\AmsService.csproj", "{8A1800DC-1909-4371-9816-CF8553AD07B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "amsBOT", "amsBOT\amsBOT.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot4AMS", "Bot4AMS\Bot4AMS.csproj", "{F85E4200-7A4C-43E2-8F95-722F62790625}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +43,10 @@ Global
 		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A1800DC-1909-4371-9816-CF8553AD07B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F85E4200-7A4C-43E2-8F95-722F62790625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F85E4200-7A4C-43E2-8F95-722F62790625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F85E4200-7A4C-43E2-8F95-722F62790625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F85E4200-7A4C-43E2-8F95-722F62790625}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

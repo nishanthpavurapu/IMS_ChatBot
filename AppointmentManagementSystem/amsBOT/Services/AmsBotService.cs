@@ -26,7 +26,6 @@ namespace amsBOT.Services
                     return "Appointment not confirmed!";
                 }
             }
-            return null;
         }
     }
 }
