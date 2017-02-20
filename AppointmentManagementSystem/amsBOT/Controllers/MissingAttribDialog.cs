@@ -21,7 +21,6 @@ namespace amsBOT.Controllers
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> argument)
         {
             var activity = await argument as Activity;
-            await context.PostAsync("fuck");
             context.Wait(MessageReceivedAsync);
 
         }
