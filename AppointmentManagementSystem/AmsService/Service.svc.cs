@@ -20,13 +20,17 @@ namespace AmsService
             string cs = ConfigurationManager.ConnectionStrings["amsdbConnectionString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                SqlCommand cmd = new SqlCommand("insert into Appointments values('" + primaryamsid + "','" + dateofappointment + "','" + secondaryamsid + "','" + timeslot + "')", con);
+                SqlCommand cmd = new SqlCommand("insert into Appointments values('" + primaryamsid + "','" + dateofappointment + "','" + secondaryamsid + "','" + timeslot + "','agenda')", con);
                 try
                 {
                     con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();
-                    return("Success");
+
+                    //Sending Confirmation Email
+                    SendEmail obj = new SendEmail(primaryamsid, secondaryamsid, dateofappointment + ", " + timeslot);
+                    obj.sendCreateConfirmation();
+                    return ("Success");
                 }
                 catch (SqlException ex)
                 {
@@ -41,15 +45,34 @@ namespace AmsService
 
         public string CancelAppointment(string primaryamsid, string dateofappointment, string timeslot)
         {
+            string secondaryamsid="";
+
             string cs = ConfigurationManager.ConnectionStrings["amsdbConnectionString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                SqlCommand cmd = new SqlCommand("delete from Appointments where primary_amsid = '" +  primaryamsid + "' and appointmentdate= '"+ dateofappointment + "' and slot = '" + timeslot + "'", con);
+                SqlCommand cmd = new SqlCommand("delete from Appointments where primary_amsid = '" + primaryamsid + "' and appointmentdate= '" + dateofappointment + "' and slot = '" + timeslot + "'", con);
+
+                SqlCommand cmd_getsecondayuser = new SqlCommand("select secondary_amsid from Appointments where primary_amsid = '" +  primaryamsid + "' and appointmentdate= '"+ dateofappointment + "' and slot = '" + timeslot + "'", con);
+                
                 try
                 {
                     con.Open();
+
+                    //Getting the secondary user name
+                    SqlDataReader reader = cmd_getsecondayuser.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        secondaryamsid = reader.GetString(0);
+                    }
+                    reader.Close();
+
                     cmd.ExecuteNonQuery();
                     con.Close();
+
+                    //Sending Confirmation Email
+                    SendEmail obj = new SendEmail(primaryamsid, secondaryamsid, dateofappointment + ", " + timeslot);
+                    obj.sendDeleteConfirmation();
+
                     return "Success";
                 }
                 catch (SqlException ex)
@@ -97,11 +120,29 @@ namespace AmsService
             using (SqlConnection con = new SqlConnection(cs))
             {
                 SqlCommand cmd = new SqlCommand("update Appointments set slot='" + newtimeslot + "' where primary_amsid='" + primaryamsid + "' and appointmentdate='" + dateofappointment + "' and slot='" + oldtimeslot + "'", con);
+                if (secondaryamsid == "" || secondaryamsid == null)
+                {
+                    SqlCommand cmd_getsecondayuser = new SqlCommand("select secondary_amsid from Appointments where primary_amsid = '" + primaryamsid + "' and appointmentdate= '" + dateofappointment + "' and slot = '" + oldtimeslot + "'", con);
+                    con.Open();
+                    // Getting the secondary user name
+                    SqlDataReader reader = cmd_getsecondayuser.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        secondaryamsid = reader.GetString(0);
+                    }
+                    reader.Close();
+                    con.Close();
+                }
                 try
                 {
                     con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();
+
+                    //Sending Confirmation Email
+                    SendEmail obj = new SendEmail(primaryamsid, secondaryamsid, dateofappointment + ", " + newtimeslot);
+                    obj.sendEditConfirmation();
+
                     return "Success";
                 }
                 catch (SqlException ex)
@@ -115,15 +156,32 @@ namespace AmsService
             return null;
         }
 
-        public string ViewUserAppointments(string primaryamsid, string dateofappointment)
+        public string ViewUserAppointments(string primaryamsid, string dateofappointment, string weekstartdate, string weekenddate, string monthstartdate, string monthenddate)
         {
+            string userCondition = "(primary_amsid='" + primaryamsid + "' or secondary_amsid='" + primaryamsid + "')";
+            string dateCondition = "and (cast(appointmentdate as date) = '" + dateofappointment + "')";
+            string dateRangeCondition = "and (cast(appointmentdate as date) between '"+ weekstartdate + "' and '" + weekenddate + "')";
+            string monthRangeCondition = "and (cast(appointmentdate as date) between '" + monthstartdate + "' and '" + monthenddate + "')"; 
+
+            if ((weekenddate == null || weekenddate == "none") || (weekstartdate == null || weekstartdate == "none"))
+            {
+                dateRangeCondition = "";
+            }
+            if ( dateofappointment == null || dateofappointment == "none")
+            {
+                dateCondition = "";
+            }
+            if ((monthenddate == null || monthenddate == "none") || (monthstartdate == null || monthstartdate == ""))
+            {
+                monthRangeCondition = "";
+            }
 
             List<Appointment> Appointments = new List<Appointment>();
 
             String cs = ConfigurationManager.ConnectionStrings["amsdbConnectionString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                SqlCommand cmd_appointments = new SqlCommand("select * from Appointments where primary_amsid='" + primaryamsid + "' and appointmentdate='" + dateofappointment + "'", con);
+                SqlCommand cmd_appointments = new SqlCommand("select * from Appointments where "+ userCondition +  dateCondition + dateRangeCondition + monthRangeCondition, con);
                 con.Open();
                 SqlDataReader reader = cmd_appointments.ExecuteReader();
 

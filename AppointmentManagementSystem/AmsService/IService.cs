@@ -33,8 +33,8 @@ namespace AmsService
         string UpdateAppointment(string primaryamsid, string secondaryamsid, string dateofappointment, string oldtimeslot, string newtimeslot);
 
         [OperationContract]
-        [WebGet(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "/ViewUserAppointments?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}")]
-        string ViewUserAppointments(string primaryamsid, string dateofappointment);
+        [WebGet(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "/ViewUserAppointments?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}&weekstartdate={weekstartdate}&weekenddate={weekenddate}&monthstartdate={monthstartdate}&monthenddate={monthenddate}")]
+        string ViewUserAppointments(string primaryamsid, string dateofappointment, string weekstartdate, string weekenddate, string monthstartdate, string monthenddate);
 
         [OperationContract]
         [WebGet(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "/ViewUserAppointment?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}&timeslot={timeslot}")]

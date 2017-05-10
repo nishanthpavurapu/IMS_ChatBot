@@ -22,6 +22,7 @@ namespace Bot4AMS.Services
                 var rawData = await client.DownloadStringTaskAsync(new Uri(uri));
                 if (rawData.Contains("Success"))
                 {
+                    
                     return "Appointment confirmed!";
                 }
                 else {
@@ -88,9 +89,9 @@ namespace Bot4AMS.Services
         }
 
         //asyncTask for View single appointment
-        public static async Task<string> ViewAppointment(string primaryamsid, string dateofappointment, string timeslot)
+        public static async Task<string> ViewAppointment(string primaryamsid, string dateofappointment)
         {
-            string uri = $"http://localhost:57128/Service.svc/ViewUserAppointment?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}&timeslot={timeslot}";
+            string uri = $"http://localhost:57128/Service.svc/ViewUserAppointment?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}";
 
             using (var client = new WebClient())
             {
@@ -105,7 +106,7 @@ namespace Bot4AMS.Services
                     
                     foreach (Appointment appointment in Appointments)
                     {
-                        result = "Your appointment on " + dateofappointment + " and " + timeslot + " is with " + appointment.secondaryamsid;
+                        result = "Your appointments on " + appointment.dateofappointment + " and " + appointment.timeslot + " is with " + appointment.secondaryamsid;
                     }
                 }
                 else
@@ -117,9 +118,9 @@ namespace Bot4AMS.Services
         }
 
         //asyncTask for View multple appointment
-        public static async Task<string> ViewAppointments(string primaryamsid, string dateofappointment)
+        public static async Task<string> ViewAppointments(string primaryamsid, string dateofappointment,string weekStartdDate, string weekEndDate, string monthStartDate, string monthEndDate)
         {
-            string uri = $"http://localhost:57128/Service.svc/ViewUserAppointments?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}";
+            string uri = $"http://localhost:57128/Service.svc/ViewUserAppointments?primaryamsid={primaryamsid}&dateofappointment={dateofappointment}&weekstartdate={weekStartdDate}&weekenddate={weekEndDate}&monthstartdate={monthStartDate}&monthenddate={monthEndDate}";
 
             using (var client = new WebClient())
             {
@@ -131,10 +132,10 @@ namespace Bot4AMS.Services
                 string result;
                 if (Appointments.Count != 0)
                 {
-                    result = "Your Appointments for " + dateofappointment + " \n\n ................................................................. \n\n";
+                    result = "Below are your appointments \n\n ................................................................. \n\n";
                     foreach (Appointment appointment in Appointments)
                     {
-                        result = result + appointment.secondaryamsid + " - " + appointment.timeslot + " \n\n ";
+                        result = result + appointment.primaryamsid + " - " + appointment.secondaryamsid + " - " + appointment.dateofappointment + " - " + appointment.timeslot + " \n\n ";
                     }
                 }
                 else

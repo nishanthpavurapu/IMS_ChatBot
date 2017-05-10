@@ -8,6 +8,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
 using Bot4AMS.Services;
+using System.Globalization;
 
 namespace Bot4AMS
 {
@@ -17,6 +18,7 @@ namespace Bot4AMS
     {
         //String variables for operations, gathered from user by the BOT
         string primary_amsid="", secondary_amsid = "", dateofappointment = "", timeslot = "",CurrentIntent="",newTimeSlot="";
+        string weekStartDate, weekEndDate, monthStartDate, monthEndDate;
 
         //-----------------------------------------------------------Section for Create Appointment --------------------------------------------------
 
@@ -203,10 +205,35 @@ namespace Bot4AMS
                     {
                         case "builtin.datetime.date":
                             dateofappointment = luisResponse.Entities[i].Resolution["date"].ToString();
-                            string date_Pattern = "yyyy-MM-dd";
-                            DateTime dateParsed;
-                            DateTime.TryParseExact(dateofappointment, date_Pattern, null, System.Globalization.DateTimeStyles.None, out dateParsed);
-                            dateofappointment = dateParsed.ToString("MM/dd/yyyy");
+                            if (dateofappointment.Contains("W"))
+                            {
+                                string temp = dateofappointment;
+                                temp = temp.Replace("W", "");
+                                string[] date_strings = temp.Split('-');
+                                DateTime dt = GetDateFromWeekNumberAndDayOfWeek(Convert.ToInt32(date_strings[0]), Convert.ToInt32(date_strings[1]), 1);
+                                weekStartDate = dt.ToString("MM/dd/yyyy");
+                                dt = dt.AddDays(4);
+                                weekEndDate = dt.ToString("MM/dd/yyyy");
+                            }
+                            else if (dateofappointment.Length == 7)
+                            {
+                                if (dateofappointment.Contains("XXXX"))
+                                {
+                                    dateofappointment = dateofappointment.Replace("XXXX", "2017");
+                                }
+                                string[] date_split = dateofappointment.Split('-');
+                                monthStartDate = date_split[1] + "/01/" + date_split[0];
+                                DateTime endOfMonth = new DateTime(Convert.ToInt32(date_split[0]), Convert.ToInt32(date_split[1]),DateTime.DaysInMonth(Convert.ToInt32(date_split[0]), Convert.ToInt32(date_split[1])));
+                                monthEndDate = endOfMonth.ToString("MM/dd/yyyy");
+                                dateofappointment = "";
+                            }
+                            else
+                            {
+                                string date_Pattern = "yyyy-MM-dd";
+                                DateTime dateParsed;
+                                DateTime.TryParseExact(dateofappointment, date_Pattern, null, System.Globalization.DateTimeStyles.None, out dateParsed);
+                                dateofappointment = dateParsed.ToString("MM/dd/yyyy");
+                            }                            
                             break;
 
                         case "builtin.datetime.time":
@@ -217,24 +244,31 @@ namespace Bot4AMS
                     }
 
                 }
-                if (dateofappointment == "")
-                {
-                    await context.PostAsync("Please enter missing Date of Appointment information [Format: mm/dd/yyyy]");
-                    context.Wait(ProcessMissingDateInfo);
-                }
-                else
-                {
-                    if (timeslot == "" || timeslot == null)
+               // if (dateofappointment == "")
+                //{
+                 //   await context.PostAsync("Please enter missing Date of Appointment information [Format: mm/dd/yyyy]");
+                  //  context.Wait(ProcessMissingDateInfo);
+               // }
+                //else
+               // {
+                  //  if (dateofappointment == "" || dateofappointment == null)
+                    if(primary_amsid != null || primary_amsid != "")
                     {
-                        await context.PostAsync(await ViewAppointments(primary_amsid, dateofappointment));
+                        if (dateofappointment == null || dateofappointment == "") {dateofappointment = "none";}
+                        if (weekStartDate == null || weekStartDate == "") {weekStartDate = "none";}
+                        if (weekEndDate == null || weekEndDate == "") {weekEndDate = "none";}
+                        if (monthEndDate == null || monthEndDate == "") { monthEndDate = "none"; }
+                        if (monthStartDate == null || monthStartDate == "") { monthStartDate = "none"; }
+
+                    await context.PostAsync(await ViewAppointments(primary_amsid,dateofappointment,weekStartDate,weekEndDate,monthStartDate,monthEndDate));
                         context.Done(true);
                     }
-                    else
-                    {
-                        await context.PostAsync(await ViewAppointment(primary_amsid, dateofappointment, timeslot));
-                        context.Done(true);
-                    }
-                }
+                   // else
+                   // {
+                   //     await context.PostAsync(await ViewAppointment(primary_amsid, dateofappointment));
+                    //    context.Done(true);
+                   // }
+                //}
             }
         }
         //-----------------------------------------------------------Section for Login LUIS Intent --------------------------------------------------
@@ -319,7 +353,7 @@ namespace Bot4AMS
         {
             var res = await result;
             dateofappointment = res.Text;
-            if (timeslot == "")
+            if (timeslot == "" && CurrentIntent != "ViewAppointments")
             {
                 await context.PostAsync("Please enter missing timeslot of Appointment information [Format: 17:00]");
                 context.Wait(ProcessMissingTimeInfo);
@@ -337,29 +371,30 @@ namespace Bot4AMS
             {
                 await context.PostAsync(await CancelAppointment(primary_amsid, dateofappointment, timeslot));
             }
-            else if (CurrentIntent == "ViewAppointments")
-            {
-                if (timeslot == "" || timeslot == null)
-                {
-                    await context.PostAsync(await ViewAppointments(primary_amsid, dateofappointment));
-                    context.Done(true);
-                }
-                else
-                {
-                    await context.PostAsync(await ViewAppointment(primary_amsid, dateofappointment, timeslot));
-                    context.Done(true);
-                }
-            }
+            //else if (CurrentIntent == "ViewAppointments")
+            //{
+            //    if (timeslot == "" || timeslot == null)
+            //    {
+            //        await context.PostAsync(await ViewAppointments(primary_amsid));
+            //        context.Done(true);
+            //    }
+            //    else
+            //    {
+            //        await context.PostAsync(await ViewAppointment(primary_amsid, dateofappointment));
+            //        context.Done(true);
+            //    }
+            //}
         }
 
         private async Task ProcessMissingTimeInfo(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var res = await result;
             timeslot = res.Text;
-            context.Wait(MessageReceived);
+          //  context.Wait(MessageReceived);
             if (CurrentIntent == "CreateAppointment")
             {
                 await context.PostAsync(await CreateAppointment(primary_amsid, secondary_amsid, dateofappointment, timeslot));
+                context.Done(true);
             }
             else if (CurrentIntent == "EditAppointment")
             {
@@ -369,8 +404,8 @@ namespace Bot4AMS
             else
             {
                 await context.PostAsync(await CancelAppointment(primary_amsid, dateofappointment, timeslot));
+                context.Done(true);
             }
-            context.Done(true);
         }
 
         private async Task ProcessNewTimeInfo(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -423,15 +458,44 @@ namespace Bot4AMS
             var result = await AmsBotService.LoginUser(primary_amsid, password);
             return result;
         }
-        private async Task<string> ViewAppointment(string primary_amsid, string dateofappointment,string timeslot)
+        private async Task<string> ViewAppointment(string primary_amsid, string dateofappointment)
         {
-            var result = await AmsBotService.ViewAppointment(primary_amsid, dateofappointment,timeslot);
+            var result = await AmsBotService.ViewAppointment(primary_amsid, dateofappointment);
             return result;
         }
-        private async Task<string> ViewAppointments(string primary_amsid, string dateofappointment)
+        private async Task<string> ViewAppointments(string primary_amsid, string dateofappointment, string weekstartdate, string weekenddate, string monthstartdate, string monthenddate)
         {
-            var result = await AmsBotService.ViewAppointments(primary_amsid, dateofappointment);
+            var result = await AmsBotService.ViewAppointments(primary_amsid, dateofappointment, weekstartdate,weekEndDate,monthstartdate,monthenddate);
             return result;
         }
+
+
+        //day of week - 0 (sunday), 1(monday)
+        static DateTime GetDateFromWeekNumberAndDayOfWeek(int yearNumber, int weekNumber, int dayOfWeek)
+        {
+            int firstWeek;
+            DateTime jan1 = new DateTime(yearNumber, 1, 1);
+            int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
+
+            DateTime firstThursday = jan1.AddDays(daysOffset);
+            var cal = CultureInfo.CurrentCulture.Calendar;
+
+            if (dayOfWeek == 1)
+            {
+                firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            }
+            else
+            {
+                firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Friday);
+            }
+            var weekNum = weekNumber;
+            if (firstWeek <= 1)
+            {
+                weekNum -= 1;
+            }
+            var result = firstThursday.AddDays(weekNum * 7);
+            return result.AddDays(-3);
+        }
+
     }
 }
