@@ -31,7 +31,7 @@ namespace AmsService
             smtp.Host = "smtp.gmail.com";
             smtp.EnableSsl = true;
 
-            NetworkCredential NetworkCred = new NetworkCredential("bot4ams@gmail.com", "pavurapu123*");
+            NetworkCredential NetworkCred = new NetworkCredential("bot4ams@gmail.com", "testpassword");
             smtp.UseDefaultCredentials = true;
             smtp.Credentials = NetworkCred;
             smtp.Port = 587;
