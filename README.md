@@ -11,3 +11,11 @@ other users who are registered with the system. Users here can be of any type st
 should possess a valid email address. Second part of the project is to create an intelligent and Natural Language
 understandable chatbot, and thereby integrating it with the appointment management system. This project allows users 
 to schedule an appointment, cancel their appointment and view his appointments.
+
+
+# Design
+
+![image](https://user-images.githubusercontent.com/17897088/126439697-b6fa9afb-2224-4c25-bf07-a01273d2911a.png)
+
+# Detailed Documentation
+- AmsBot Implementation.docx
